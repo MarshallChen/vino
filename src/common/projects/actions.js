@@ -4,6 +4,9 @@ export const FETCH_PROJECTS_ERROR = 'FETCH_PROJECTS_ERROR';
 export const FETCH_PROJECTS_BY_PAGE = 'FETCH_PROJECTS_BY_PAGE';
 export const FETCH_PROJECTS_BY_PAGE_SUCCESS = 'FETCH_PROJECTS_BY_PAGE_SUCCESS';
 export const FETCH_PROJECTS_BY_PAGE_ERROR = 'FETCH_PROJECTS_BY_PAGE_ERROR';
+export const FETCH_SPECIFIC_PROJECT = 'FETCH_SPECIFIC_PROJECT';
+export const FETCH_SPECIFIC_PROJECT_SUCCESS = 'FETCH_SPECIFIC_PROJECT_SUCCESS';
+export const FETCH_SPECIFIC_PROJECT_ERROR = 'FETCH_SPECIFIC_PROJECT_ERROR';
 export const CHANGE_PAGE = 'CHANGE_PAGE';
 
 export function projects() {
@@ -36,7 +39,8 @@ export function fetchProjectsByPage({ page }) {
   }
 }
 
-export function project(id) {
+export function project({params}) {
+  const { id } = params;
   return ({ fetch }) => {
     return {
       type: FETCH_SPECIFIC_PROJECT,

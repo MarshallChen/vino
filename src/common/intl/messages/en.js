@@ -1,7 +1,7 @@
 export default {
   app: {
     footer: {
-      madeByHtml: 'made by <a href="https://twitter.com/steida">steida</a>'
+      madeByHtml: 'Daily Architectures'
     },
     links: {
       home: 'Projects',
@@ -46,7 +46,7 @@ export default {
     // androidInfoText: ``,
     infoHtml: '<a href="https://github.com/este/este">Este.js</a> dev stack.',
     iosInfoText: `Yo, batman.\n\nEste.js dev stack.\n\nOpen left menu and check todos!\n\nPress CMD+R to reload.\nPress CMD+D for debug menu.`,
-    title: 'Este.js',
+    title: 'Architectures',
     toCheck: {
       andMuchMore: 'And much more :-)',
       h2: 'Things to Check',

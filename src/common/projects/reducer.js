@@ -6,7 +6,7 @@ const InitialState = Record({
   currentPage: 0,
   detail: new Map()
 });
-const initailState = new InitialState;
+const initialState = new InitialState;
 const revive = ({ list, detail }) => {
   return initialState.merge({
     list: List(list),
@@ -15,7 +15,7 @@ const revive = ({ list, detail }) => {
   });
 }
 
-export default function projectsReducer(state = initailState, action) {
+export default function projectsReducer(state = initialState, action) {
   if (!(state instanceof InitialState)) return revive(state);
 
   switch (action.type) {

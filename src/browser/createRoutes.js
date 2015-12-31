@@ -7,6 +7,7 @@ import Profile from './me/Profile.react';
 import React from 'react';
 import Settings from './me/Settings.react';
 import Todos from './todos/Page.react';
+import Project from './projects/Project.react';
 import {IndexRoute, Route} from 'react-router';
 
 export default function createRoutes(getState) {
@@ -26,6 +27,7 @@ export default function createRoutes(getState) {
         <Route component={Profile} path="profile" />
         <Route component={Settings} path="settings" />
       </Route>
+      <Route component={Project} path="project/:id" />
       <Route component={Todos} path="todos" />
       <Route component={NotFound} path="*" />
     </Route>

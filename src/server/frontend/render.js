@@ -113,7 +113,7 @@ function getScriptHtml(clientState, headers, hostname) {
 
   const appScriptSrc = config.isProduction
     ? '/_assets/app.js?' + config.assetsHashes.appJs
-    : `//${hostname}:${HOT_RELOAD_PORT}/build/app.js`;
+    : `//${hostname}:9110/build/app.js`;
 
   // Note how clientState is serialized. JSON.stringify is anti-pattern.
   // https://github.com/yahoo/serialize-javascript#user-content-automatic-escaping-of-html-characters

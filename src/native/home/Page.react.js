@@ -7,7 +7,7 @@ import React, {
   View,
   Dimensions,
   ScrollView,
-  TouchableHighlight,
+  TouchableOpacity,
   ListView,
 } from 'react-native';
 import appStyles from '../app/styles';
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover'
   },
   title: {
+    backgroundColor: 'transparent',
     position: 'absolute',
     fontSize: 16,
     color: '#fff',
@@ -65,27 +66,28 @@ class Page extends Component {
     }
   }
 
-  show({ id, title }) {
-    const { onRouteChange } = this.props;
-    onRouteChange('project');
+  async show({ id }) {
+    const { actions, onRouteChange } = this.props;
+    const {error, payload} = await actions.project(id);
+    if (!error) onRouteChange('project');
   }
 
   renderRow(project, sectionID, projectID) {
     if (!project.images.length || !project.title) {
       <View>
-        <Text>Loading...</Text>
+        <Text style={styles.title}>Loading...</Text>
       </View>
     }
     const hero = project.images[0].replace(/large_jpg/g, 'medium_jpg');
     return (
-      <TouchableHighlight
-        onPress={this.show.bind(this, { id: project.id, title: project.title})}>
+      <TouchableOpacity
+        onPress={this.show.bind(this, { id: project.id })}>
         <View style={[styles.card]} key={project.id}>
           <Image source={{uri: hero}}
                  style={[styles.image]} />
           <Text style={[styles.title]}>{project.title}</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 

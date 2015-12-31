@@ -3,8 +3,10 @@ import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
 import {FormattedHTMLMessage} from 'react-intl';
 import {Link} from 'react-router';
+import fetch from '../components/fetch';
+import { projects } from '../../common/projects/actions';
 
-export default class Page extends Component {
+class Page extends Component {
 
   static propTypes = {
     // Why not PropTypes.object.isRequired? Because:
@@ -12,35 +14,37 @@ export default class Page extends Component {
     msg: PropTypes.object
   }
 
+  more(e) {
+    e.preventDefault();
+    let { actions, projects: { currentPage }} = this.props;
+    currentPage++;
+    actions.fetchProjectsByPage({ page: currentPage });
+  }
+
   render() {
-    const {msg: {home: msg}} = this.props;
+    const {msg: {home: msg}, projects: { list }} = this.props;
+    const styles = {
+      width: '24%',
+      margin: '0 .5% 1rem',
+      verticalAlign: 'top'
+    }
 
     return (
       <DocumentTitle title={msg.title}>
         <div className="home-page">
-          <p>
-            <FormattedHTMLMessage defaultMessage={msg.infoHtml} />
-          </p>
-          <div className="tocheck">
-            <h2>{msg.toCheck.h2}</h2>
-            <ul>
-              {msg.toCheck.list.map(({key, text}) =>
-                <li key={key}>
-                  <FormattedHTMLMessage defaultMessage={text} />
-                </li>
-              )}
-              <li>
-                {msg.toCheck.isomorphicPage}{' '}
-                <Link to="/this-is-not-the-web-page-you-are-looking-for">404</Link>
-              </li>
-              <li>
-                {msg.toCheck.andMuchMore}
-              </li>
-            </ul>
-          </div>
+          {list.toJS().map((project, key) => {
+            return (
+              <Link to={`/project/${project.id}`}>
+                <img src={project.images[0].replace(/large_jpg/, 'medium_jpg')} style={styles} key={key} />
+              </Link>
+            )
+          })}
+          <button onClick={e => this.more(e)}>Load More</button>
         </div>
       </DocumentTitle>
     );
   }
 
 }
+
+export default fetch(projects)(Page);

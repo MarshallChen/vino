@@ -25,10 +25,17 @@ class App extends Component {
   // TODO: Fluxify routing and make it universal with redux-router.
   // Store current route in storage.
   // https://github.com/rackt/redux-router/issues/63
-  onRouteChange(route) {
+  onRouteChange(route, isSideMenuTouch) {
     const {actions} = this.props;
-    this.navigator.replace(routes[route]);
-    actions.toggleSideMenu();
+    if (route === 'project') {
+      this.navigator.push(routes[route]);
+    } else if (route === 'back') {
+      this.navigator.pop();
+    } else {
+      this.navigator.replace(routes[route]);
+    }
+    if (isSideMenuTouch)
+      actions.toggleSideMenu();
   }
 
   onSideMenuChange(isOpen) {
@@ -44,6 +51,7 @@ class App extends Component {
     switch (route) {
       case routes.home: return links.home;
       case routes.todos: return links.todos;
+      case routes.project: return 'Project';
     }
   }
 
@@ -55,12 +63,13 @@ class App extends Component {
         <Header
           title={this.getTitle(route)}
           toggleSideMenu={actions.toggleSideMenu}
+          goBack={() => this.navigator.pop()}
         />
-        <route.Page {...this.props} />
+        <route.Page {...this.props} onRouteChange={route => this.onRouteChange(route, false)} />
       </View>;
 
     const menu =
-      <Menu msg={msg} onRouteChange={route => this.onRouteChange(route)} />;
+      <Menu msg={msg} onRouteChange={route => this.onRouteChange(route, true)} />;
 
     return (
       <SideMenu

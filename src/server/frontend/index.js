@@ -4,6 +4,8 @@ import esteMiddleware from '../lib/esteMiddleware';
 import express from 'express';
 // import favicon from 'serve-favicon';
 import render from './render';
+import filter from '../lib/filter';
+
 
 const app = express();
 
@@ -15,6 +17,8 @@ app.use(compression());
 // Serve the static assets. We can cache them as they include hashes.
 app.use('/assets/img', express.static('../assets/img', {maxAge: '200d'}));
 app.use('/_assets', express.static('build', {maxAge: '200d'}));
+
+app.use('/filter', filter());
 
 // Intl.
 app.use('/node_modules/intl/dist', express.static('node_modules/intl/dist'));
