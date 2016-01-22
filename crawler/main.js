@@ -49,33 +49,39 @@ function parseDetail( url ) {
     req.end((err, res) => {
       if (!err) {
         var $ = cheerio.load( res.text );
-        var title = $('#single-post-title').text().replace(/\n/g, '').trim()
+        var title = $('.article-header').find('h1').text().replace(/\n/g, '').trim()
         var time = $('.theDate').text().replace(/\n/g, '').trim();
-        var timeString = moment(time, 'DDMMMYYYY').isValid() && moment(time, 'DDMMMYYYY').toJSON();
-        var specs = $('.specs');
-        var content = $('#the_content');
+        var timeString = moment(time, 'hh:mm - DD MMMM, YYYY').isValid() && moment(time, 'hh:mm - DD MMMM, YYYY').toJSON();
+        var specs = $('.char-list');
+        var content = $('#single-content');
+        var gallery = $('#gallery-thumbs');
         var specs_json = [];
         var desc = [];
         var images = [];
         specs.find('li').each((i, li) => {
-          let text = $(li).text().replace(/\s\s+/g, '')
-          if (text) specs_json.push(text);
+          let title = $(li).find('.char-title').text().replace(/\s\s+/g, '');
+          let text = $(li).find('.char-text').text().replace(/\s\s+/g, '');
+          if (title && text) specs_json.push(`${title}:${text}`);
         });
-        content.find('p').each((i, p) => {
+        content.find('p').not('.thumbs').each((i, p) => {
           let description = $(p).text().replace(/(\r\n|\n|\r)/g, '').trim();
           if (description !== '') desc.push(description);
         })
-        $('script').each((i, script) => {
-          if ($(script).text().match('galleryContent')) {
-            let str = $(script).text().replace(/\s\s+|\n|\r|\r\n/g, '');
-            let extractedSrc = str.match(/(http:[^\s]+)/g);
-            if (extractedSrc.length) {
-              extractedSrc.forEach(src => {
-                images.push(src.replace(/'/g, '').replace(/thumb_jpg/g, 'large_jpg'))
-              })
-            }
-          }
-        })
+        gallery.find('img').each((i, img) => {
+          let src = $(img).attr('data-src').replace(/thumb_jpg/g, 'large_jpg');
+          if (src) images.push(src);
+        });
+        // $('script').each((i, script) => {
+        //   if ($(script).text().match('galleryContent')) {
+        //     let str = $(script).text().replace(/\s\s+|\n|\r|\r\n/g, '');
+        //     let extractedSrc = str.match(/(http:[^\s]+)/g);
+        //     if (extractedSrc.length) {
+        //       extractedSrc.forEach(src => {
+        //         images.push(src.replace(/'/g, '').replace(/thumb_jpg/g, 'large_jpg'))
+        //       })
+        //     }
+        //   }
+        // })
         if (title && timeString && specs_json.length && desc.length && images.length) {
           insert({
             addedDate: timeString,

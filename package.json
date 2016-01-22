@@ -72,7 +72,7 @@
     "less-loader": "^2.0.0",
     "lodash": "^3.10.1",
     "lwip": "marshallchen/lwip",
-    "moment": "^2.10.6",
+    "moment": "^2.11.0",
     "nconf": "^0.8.1",
     "node-sass": "^3.1.2",
     "nodemon": "<1.8.0",

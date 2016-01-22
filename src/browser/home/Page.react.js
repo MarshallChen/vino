@@ -35,7 +35,7 @@ class Page extends Component {
           {list.toJS().map((project, key) => {
             return (
               <Link to={`/project/${project.id}`}>
-                <img src={project.images[0].replace(/large_jpg/, 'medium_jpg')} style={styles} key={key} />
+                <img src={decodeURIComponent(project.images[0].replace(/large_jpg/, 'medium_jpg').replace(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec)))} style={styles} key={key} />
               </Link>
             )
           })}
